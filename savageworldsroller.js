@@ -17,22 +17,34 @@ on("chat:message", function(msg) {
     }
   if(msg.type == "api" && msg.content.indexOf("!swr ") !== -1) {
     log(msg.content);
-    var args = msg.content.replace("!swr ", "");
-    var traitandDice = args.split(",");
+    //constant for dice allowed
     var allowedDice=['4','6','8','10','12'];
-    var traitName=traitandDice[0];
-    var numberofDice=traitandDice[1];
-    var diceSize=traitandDice[2];
-    if (traitandDice[3]){
-        var bonus=traitandDice[3];
-    }
-    else
-    {
-        var bonus=0;
-    }
+    var errorMessage="&{template:default}{{name=Savage Worlds Roller Doc}}{{doc=please use following format !swr trait #d#+/-#}}{{API command=!SWR}}{{trait=the trait you want to roll (ie Agility, Shooting)}}{{First #=number of dice (>0 but <7)}}{{Second #=The die type (4,6,8,10,12)}}{{Optional Third #=Add the bonus/penalty to the roll (ie 2 or-2)}}";
     
+    var args = msg.content.replace("!swr ", "");
+    var traitandDice = args.split(" ");
+   //Parse input
+    var traitName=traitandDice[0];
+    if (traitandDice[1]){
+        var roll=traitandDice[1].split("d");
+        var numberofDice=roll[0];
+        if (roll[1]){
+            if (roll[1].includes('-')){
+                var diceSizeandBonous=roll[1].split("-");
+                var diceSize=diceSizeandBonous[0];
+                var bonus="-"+diceSizeandBonous[1];
+            } else if (roll[1].includes('+')){
+                var diceSizeandBonous=roll[1].split("+");
+                var diceSize=diceSizeandBonous[0];
+                var bonus=diceSizeandBonous[1];
+            } else{
+                var diceSize=roll[1];
+                var bonus=0;
+            }
+        }
+    }
     //Validate Inputs
-    var errorMessage="&{template:default}{{name=Savage Worlds Roller Doc}}{{doc=please use following format !swr trait,#,#,#}}{{API command=!SWR}}{{trait=the trait you want to roll (ie Agility, Shooting)}}{{First #=number of dice (>0 but <7)}}{{Second #=The die type (4,6,8,10,12,12+1,12+2)}}{{Optional Third #=Add the bonus/penalty to the roll (ie 2 or-2)}}  ";
+    
      if (!traitName || !numberofDice || isNaN(numberofDice) || numberofDice<1 || numberofDice > 5 ||!diceSize||!allowedDice.includes(diceSize)||isNaN(bonus)) {
        sendChat(msg.who, errorMessage);
        return;
