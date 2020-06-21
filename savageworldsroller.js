@@ -45,7 +45,7 @@ on("chat:message", function(msg) {
     }
     //Validate Inputs
     
-     if (!traitName || !numberofDice || isNaN(numberofDice) || numberofDice<1 || numberofDice > 5 || !diceSize || !allowedDice.includes(diceSize) || isNaN(bonus)) {
+     if (!traitName || !numberofDice || isNaN(numberofDice) || numberofDice<1 || numberofDice > 6 || !diceSize || !allowedDice.includes(diceSize) || isNaN(bonus)) {
        sendChat(msg.who, errorMessage);
        return;
     }
