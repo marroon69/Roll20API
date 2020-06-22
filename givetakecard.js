@@ -1,5 +1,5 @@
+log("Starting up givetakecard version 1.0");
 on("chat:message", function(msg) {
-    
   if(msg.type == "api" && msg.content.indexOf("!giveCard ") !== -1 || msg.content.indexOf("!takeCard ") !== -1) {
     var args;
     var command;
