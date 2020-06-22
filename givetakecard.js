@@ -1,38 +1,5 @@
 on("chat:message", function(msg) {
     
-    // Retrieves the Token name form the seleected tokens
-    function getTokenName(selected) {
-        
-        var name = '';
-        if(selected && selected.length === 1) {
-            var selected_id = selected[0]._id;
-            var token = getObj('graphic',selected_id);
-           
-            if(token) {
-
-                name = token.get('name');
-            }
-        }
-        return name;
-    }
-    
-    function getTokenControlledby(selected) {
-        
-
-        var controlledby = '';
-        if(selected && selected.length === 1) {
-           var selected_id = selected[0]._id;
-            var token = getObj('graphic',selected_id);
-           
-            if(token) {
-
-                controlledby = token.get('controlledby');
-            }
-        }
-        return controlledby;
-    }
-    
-    
   if(msg.type == "api" && msg.content.indexOf("!giveCard ") !== -1 || msg.content.indexOf("!takeCard ") !== -1) {
     var args;
     var command;
@@ -84,7 +51,6 @@ on("chat:message", function(msg) {
            log(cardid);
            if (command=="give"){
             giveCardToPlayer(cardid, controlleredBy);
-            sendChat(msg.who, "Gave "+ getTokenName(msg.selected) + " the following "+cardName+" card");    
            } else {
             takeCardFromPlayer(controlleredBy, {cardid: cardid} )
            }
