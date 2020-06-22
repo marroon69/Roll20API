@@ -1,21 +1,36 @@
 log("Starting up givetakecard version 1.0");
+
+
+ function playerHasCard(playerId, cardid) {
+        
+       let hand = findObjs({                              
+                _parentid: playerId,                              
+                _type: "hand",                          
+                })[0];
+        let cards = hand.get("currentHand").split(",");
+        return cards.includes(cardid);
+    }
+
 on("chat:message", function(msg) {
-  if(msg.type == "api" && msg.content.indexOf("!giveCard ") !== -1 || msg.content.indexOf("!takeCard ") !== -1) {
+  if(msg.type == "api" && msg.content.indexOf("!giveCard ") !== -1 || msg.content.indexOf("!takeCard ") !== -1|| msg.content.indexOf("!toggleCard ") !== -1) {
     var args;
     var command;
     if (msg.content.indexOf("!giveCard ") !== -1){  
         args = msg.content.replace("!giveCard ", "");
         command = "give";
-    } else {
+    } else if (msg.content.indexOf("!takeCard ") !== -1) {
          args = msg.content.replace("!takeCard ", "");
          command="take";
-    }
-    log(command);
+    } else if (msg.content.indexOf("!toggleCard ") !== -1) {
+         args = msg.content.replace("!toggleCard ", "");
+         command="toggle";
+    }  
+    
     var cardName = args.split(" ")[0];
     var error = "";
-    var errorMessage="&{template:default}{{name=Give Card Doc}}{{doc=please use following format !giveCard cardname and make sure you have a token selected and that token has an owner}}{{API command=!giveCard cardname}}{{cardname=The name of the card you wish to deal}} {{Error Message=";
+    var errorMessage="&{template:default}{{Error Message=";
     
-    log(cardName);
+    
     if (!cardName)
     {
          error = "Missing Card Name";
@@ -23,10 +38,10 @@ on("chat:message", function(msg) {
          return;
     }
     var controlleredBy = getTokenControlledby(msg.selected);
-    log(controlleredBy);
+   
     if (!controlleredBy)
     {
-        error = "Issue with the Token controlled By Setting";
+        error = "Issue with the Token (either not selected or no controll set)";
         sendChat(msg.who, errorMessage+error+"}}");
         return;
     }
@@ -34,7 +49,7 @@ on("chat:message", function(msg) {
     var card = findObjs({type:'card',name: cardName})[0];
     if (!card)
     {
-        error = "Card not Found";
+        error = "Card "+cardName+" not Found";
         sendChat(msg.who, errorMessage+error+"}}");
         return;
     }
@@ -42,13 +57,20 @@ on("chat:message", function(msg) {
     var cardid = card.get("_id");
     if (!cardid)
     {
-        error = "Card not Found";
+       error = "Card "+cardName+" not Found";
        sendChat(msg.who, errorMessage+error+"}}");
        return;
     }
     
         if(cardid){
-           log(cardid);
+           
+           if (command=="toggle"){
+               if (playerHasCard(controlleredBy, cardid)){
+                   command="take";
+               } else {
+                   command="give";
+               }
+           }
            if (command=="give"){
             giveCardToPlayer(cardid, controlleredBy);
            } else {
