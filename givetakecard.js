@@ -12,24 +12,23 @@ log("Starting up givetakecard version 1.0");
     }
 
 on("chat:message", function(msg) {
-  if(msg.type == "api" && msg.content.indexOf("!giveCard ") !== -1 || msg.content.indexOf("!takeCard ") !== -1|| msg.content.indexOf("!toggleCard ") !== -1) {
+  if(msg.type == "api" && msg.content.indexOf("!card ") !== -1) {
     var args;
     var command;
-    if (msg.content.indexOf("!giveCard ") !== -1){  
-        args = msg.content.replace("!giveCard ", "");
-        command = "give";
-    } else if (msg.content.indexOf("!takeCard ") !== -1) {
-         args = msg.content.replace("!takeCard ", "");
-         command="take";
-    } else if (msg.content.indexOf("!toggleCard ") !== -1) {
-         args = msg.content.replace("!toggleCard ", "");
-         command="toggle";
-    }  
+    var allowedComands=["give","take","toggle"]
+    args = msg.content.replace("!card ", "");
+    var command = args.split(" ")[0];
     
-    var cardName = args.split(" ")[0];
+    var cardName = args.split(" ")[1];
+    
     var error = "";
     var errorMessage="&{template:default}{{Error Message=";
     
+    if (!command || !allowedComands.includes(command)){
+         error = "Valid Commands are : give, take, toggle";
+         sendChat(msg.who, errorMessage+error+"}}");
+         return;
+    }
     
     if (!cardName)
     {
@@ -41,7 +40,7 @@ on("chat:message", function(msg) {
    
     if (!controlleredBy)
     {
-        error = "Issue with the Token (either not selected or no controll set)";
+        error = "Issue with the Token controlled By Setting";
         sendChat(msg.who, errorMessage+error+"}}");
         return;
     }
@@ -49,7 +48,7 @@ on("chat:message", function(msg) {
     var card = findObjs({type:'card',name: cardName})[0];
     if (!card)
     {
-        error = "Card "+cardName+" not Found";
+        error = "Card not Found";
         sendChat(msg.who, errorMessage+error+"}}");
         return;
     }
@@ -57,7 +56,7 @@ on("chat:message", function(msg) {
     var cardid = card.get("_id");
     if (!cardid)
     {
-       error = "Card "+cardName+" not Found";
+        error = "Card not Found";
        sendChat(msg.who, errorMessage+error+"}}");
        return;
     }
