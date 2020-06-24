@@ -15,7 +15,7 @@ on("chat:message", function(msg) {
   if(msg.type == "api" && msg.content.indexOf("!card ") !== -1) {
     var args;
     var command;
-    var allowedComands=["give","take","toggle"]
+    var allowedComands=["give","take","toggle"];
     args = msg.content.replace("!card ", "");
     var command = args.split(" ")[0];
     
@@ -71,9 +71,11 @@ on("chat:message", function(msg) {
                }
            }
            if (command=="give"){
-            giveCardToPlayer(cardid, controlleredBy);
+                if (!playerHasCard(controlleredBy, cardid)){
+                    giveCardToPlayer(cardid, controlleredBy);
+                }
            } else {
-            takeCardFromPlayer(controlleredBy, {cardid: cardid} )
+                takeCardFromPlayer(controlleredBy, {cardid: cardid} )
            }
         }
   }
