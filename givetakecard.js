@@ -1,16 +1,5 @@
 log("Starting up givetakecard version 1.0");
 
-
- function playerHasCard(playerId, cardid) {
-        
-       let hand = findObjs({                              
-                _parentid: playerId,                              
-                _type: "hand",                          
-                })[0];
-        let cards = hand.get("currentHand").split(",");
-        return cards.includes(cardid);
-    }
-
 on("chat:message", function(msg) {
   if(msg.type == "api" && msg.content.indexOf("!card ") !== -1) {
     var args;
