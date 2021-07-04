@@ -1,4 +1,4 @@
-  // Retrieves the Token name form the seleected tokens
+     // Retrieves the Token name form the seleected tokens
     function getTokenName(selected) {
         
         var name = '';
@@ -12,6 +12,25 @@
             }
         }
         return name;
+    }
+    
+     function isTokenStatusSet(selected,status) {
+        
+        var statusSet = '';
+        var isStatusSet;
+        if(selected && selected.length === 1) {
+            var selected_id = selected[0]._id;
+            var token = getObj('graphic',selected_id);
+           
+            if(token) {
+
+                statusSet = token.get("statusmarkers").spliet(",");
+                log(statusSet);
+                isStatusSet=statusSet.includes(status);
+                log(isStatusSet);
+            }
+        }
+        return isStatusSet;
     }
     
     function getTokenControlledby(selected) {
@@ -32,4 +51,14 @@
             }
         }
         return controlledby;
+    }
+    
+     function playerHasCard(playerId, cardid) {
+        
+       let hand = findObjs({                              
+                _parentid: playerId,                              
+                _type: "hand",                          
+                })[0];
+        let cards = hand.get("currentHand").split(",");
+        return cards.includes(cardid);
     }
