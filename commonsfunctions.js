@@ -1,4 +1,4 @@
-     // Retrieves the Token name form the seleected tokens
+    // Retrieves the Token name form the seleected tokens
     function getTokenName(selected) {
         
         var name = '';
@@ -41,12 +41,18 @@
            var token = getObj('graphic',selected_id);
           
             if(token) {
-                controlledby = token.get('controlledby');
-                var represents = token.get('represents');
-                //use the character represents not the controlled by
-                if (represents){
-                    var charcater = getObj('character',represents);
-                    controlledby = charcater.get('controlledby');
+               controlledby = token.get('controlledby');
+                if (!controlledby ==='all'){
+                    var represents = token.get('represents');
+                    log(represents);
+                    //use the character represents not the controlled by
+                    if (represents){
+                        var charcater = getObj('character',represents);
+                        controlledby = charcater.get('controlledby');
+                        log(controlledby);
+                    }
+                } else {
+                    controlledby = '';
                 }
             }
         }
