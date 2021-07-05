@@ -26,11 +26,10 @@ on("chat:message", function(msg) {
          return;
     }
     var controlleredBy = getTokenControlledby(msg.selected);
-   
-    if (!controlleredBy)
+    
+      if (!controlleredBy)
     {
-        error = "Issue with the Token controlled By Setting";
-        sendChat(msg.who, errorMessage+error+"}}");
+        log("Issue with the Token controlled By Setting");
         return;
     }
     
