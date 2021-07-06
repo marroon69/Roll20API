@@ -16,18 +16,24 @@
     
      function isTokenStatusSet(selected,status) {
         
-        var statusSet = '';
+        var statusSet = "";
+        var statusName;
         var isStatusSet;
         if(selected && selected.length === 1) {
             var selected_id = selected[0]._id;
             var token = getObj('graphic',selected_id);
-           
             if(token) {
 
-                statusSet = token.get("statusmarkers").spliet(",");
-                log(statusSet);
-                isStatusSet=statusSet.includes(status);
-                log(isStatusSet);
+                statusSet = token.get("statusmarkers").split(",");
+               
+                for (index = 0; index < statusSet.length; index++) {
+                    statusName = statusSet[index].split("::");
+               
+                    if (statusName[0] == status){
+                        isStatusSet=true;
+                    }
+                }
+               
             }
         }
         return isStatusSet;
@@ -42,14 +48,14 @@
           
             if(token) {
                controlledby = token.get('controlledby');
-                if (!controlledby ==='all'){
+                if (controlledby !='all'){
                     var represents = token.get('represents');
-                    log(represents);
+                    
                     //use the character represents not the controlled by
                     if (represents){
                         var charcater = getObj('character',represents);
                         controlledby = charcater.get('controlledby');
-                        log(controlledby);
+                       
                     }
                 } else {
                     controlledby = '';
