@@ -27,7 +27,7 @@ on("chat:message", function(msg) {
     }
     var controlleredBy = getTokenControlledby(msg.selected);
     
-      if (!controlleredBy)
+    if (!controlleredBy)
     {
         log("Issue with the Token controlled By Setting");
         return;
@@ -63,7 +63,9 @@ on("chat:message", function(msg) {
                     giveCardToPlayer(cardid, controlleredBy);
                 }
            } else {
-                takeCardFromPlayer(controlleredBy, {cardid: cardid} )
+               if (!isTokenStatusSet(msg.selected,cardName)){
+                    takeCardFromPlayer(controlleredBy, {cardid: cardid} )
+               }
            }
         }
   }
