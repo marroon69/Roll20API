@@ -1,20 +1,5 @@
+log("Starting up savageworldroller version 1.0");
 on("chat:message", function(msg) {
-    
-    // Retrieves the Token name form the seleected tokens
-    function getTokenName(selected) {
-        
-        var name = '';
-        if(selected && selected.length === 1) {
-            var selected_id = selected[0]._id;
-            var token = getObj('graphic',selected_id);
-           
-            if(token) {
-
-                name = token.get('name');
-            }
-        }
-        return name;
-    }
   if(msg.type == "api" && msg.content.indexOf("!swr ") !== -1) {
     
     //constant for dice allowed
