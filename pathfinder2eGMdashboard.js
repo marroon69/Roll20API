@@ -1,7 +1,12 @@
 on('chat:message', msg => {
     if(msg.type === 'api' && msg.content === '!GMD') {
         let sheetname='GM dashboard';
-        let header='<p><a href=\"!GMD\">refresh</a><br></p><table class=\"userscript-table userscript-table-bordered\"><tbody><tr>';
+        let header='<p><a href=\"!GMD\">refresh</a><br></p>';
+        let table = '<table class= "userscript-table userscript-table-bordered" style="border: 1px solid black;"><tbody>';
+        let tableRowEven = '<tr style= "border: 1px solid black; background-color: #f2f2f2;">';
+        let tableRowOdd = '<tr style= "border: 1px solid black; ">';
+        let tableRow = "";
+        let tableCell = '<td style="border: 1px solid black;">';
         let columnNames =['Name', 'HP','HP Max', 'AC', 'Perception', 'Stealth','Fort', 'Refex', 'Will','Lore']
         let attributes = ['character_name', 'hit_points','hit_points_max','armor_class', 'group$perception$perception_proficiency_display',
         'group$stealth$stealth_proficiency_display','saving_throws_fortitude', 'saving_throws_reflex', 'saving_throws_will', 'repeating_lore_$0_lore_name'];
@@ -13,6 +18,7 @@ on('chat:message', msg => {
         let sheet_type='npc';
         let repeatingDelimiter='$0_';
         var loreList=[];
+        header = header.concat(table);
         
         gmnotes = findObjs({ type:'handout',name:sheetname});
 
@@ -25,18 +31,24 @@ on('chat:message', msg => {
     //        log(notes); //do something with the character bio here.
     //    });
     
+        header = header.concat(tableRow);
         columnNames.forEach(function (item,index) {
-            header = header.concat('<td>'+item+'</td>');
+            header = header.concat('<th style=" background-color: #04AA6D;border: 2px solid black;">'+item+'</th>');
         });
         header.concat('</tr>');
         allCharacters=findObjs({ type: 'character'});
         allCharacters.forEach(function (item, index) {
-             body = body.concat('<tr>');
+            if(index % 2 == 0) {
+                tableRow = tableRowEven;
+            } else{
+                tableRow = tableRowOdd;
+            }
+             body = body.concat(tableRow);
             if (getAttrByName(item.id, "sheet_type") !== sheet_type){
                 attributes.forEach(function (attribute,index) {
                     if (attribute.includes('_max')){
                         attribute= attribute.replace('_max','');
-                        body = body.concat('<td>'+getAttrByName(item.id, attribute,'max')+'</td>');
+                        body = body.concat(tableCell+getAttrByName(item.id, attribute,'max')+'</td>');
                         
                     } else if (attribute.includes('repeating')){
                         repeatList=[];
@@ -45,7 +57,7 @@ on('chat:message', msg => {
                         let repeating = findObjs({_type: 'attribute',_characterid:item.id});
                         repeating.forEach(function (item, index) {
                             
-                            var name = item.get('name');
+                            let name = item.get('name');
                             
                             if (name.includes(repeating_attrribute)){
                                 
@@ -53,7 +65,7 @@ on('chat:message', msg => {
                             }
                         });
                        ;
-                        body = body.concat('<td>');
+                        body = body.concat(tableCell);
                         repeatList.forEach(function(item,index){
                             body = body.concat(item+'<br>');
                         })
@@ -61,7 +73,7 @@ on('chat:message', msg => {
                     } else if (attribute.includes('group$')){
                         attribute= attribute.replace('group$','');
                         let groupAttributes=attribute.split('$');
-                        body = body.concat('<td>');
+                        body = body.concat(tableCell);
                         groupAttributes.forEach(function(groupedAtrribute,index){
                             body = body.concat(getAttrByName(item.id, groupedAtrribute));
                         })
@@ -70,7 +82,7 @@ on('chat:message', msg => {
                     }
                     else{
                         
-                        body = body.concat('<td>'+getAttrByName(item.id, attribute)+'</td>');
+                        body = body.concat(tableCell+getAttrByName(item.id, attribute)+'</td>');
                     }
                 });
             }
