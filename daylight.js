@@ -32,7 +32,7 @@ on('chat:message',msg=>{
                 page.set('lightupdatedrop',true);
                 page.set('daylightModeOpacity',1.0);
                 page.set('force_lighting_refresh',true);
-                sendChat('daylight','Sun is blazing');
+                sendChat('daylight','The Sun is blazing in the sky');
             } else if (msg.content.split(' ')[1].toLowerCase() === 'night') {
                 
                 page.set('dynamic_lighting_enabled',true);
@@ -41,7 +41,7 @@ on('chat:message',msg=>{
                 page.set('lightupdatedrop',true);
                 page.set('daylightModeOpacity',0.0);
                 page.set('force_lighting_refresh',true);
-                sendChat('daylight','Night falls');
+                sendChat('daylight','The dark of night falls');
             } else if (msg.content.split(' ')[1].toLowerCase() === 'moonlight') {
                 
                 page.set('dynamic_lighting_enabled',true);
@@ -50,7 +50,7 @@ on('chat:message',msg=>{
                 page.set('lightupdatedrop',true);
                 page.set('daylightModeOpacity',0.2);
                 page.set('force_lighting_refresh',true);
-                sendChat('daylight','Night falls');
+                sendChat('daylight','The moon shine bright');
             } else if (msg.content.split(' ')[1].toLowerCase() === 'off') { 
                 
                 page.set('dynamic_lighting_enabled',false);
