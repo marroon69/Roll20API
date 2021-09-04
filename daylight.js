@@ -50,7 +50,7 @@ on('chat:message',msg=>{
                 page.set('lightupdatedrop',true);
                 page.set('daylightModeOpacity',0.2);
                 page.set('force_lighting_refresh',true);
-                sendChat('daylight','The moon shine bright');
+                sendChat('daylight','The moon shines bright');
             } else if (msg.content.split(' ')[1].toLowerCase() === 'off') { 
                 
                 page.set('dynamic_lighting_enabled',false);
