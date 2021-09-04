@@ -42,6 +42,15 @@ on('chat:message',msg=>{
                 page.set('daylightModeOpacity',0.0);
                 page.set('force_lighting_refresh',true);
                 sendChat('daylight','Night falls');
+            } else if (msg.content.split(' ')[1].toLowerCase() === 'moonlight') {
+                
+                page.set('dynamic_lighting_enabled',true);
+                page.set('daylight_mode_enabled', true);
+                page.set('explorer_mode','no');
+                page.set('lightupdatedrop',true);
+                page.set('daylightModeOpacity',0.2);
+                page.set('force_lighting_refresh',true);
+                sendChat('daylight','Night falls');
             } else if (msg.content.split(' ')[1].toLowerCase() === 'off') { 
                 
                 page.set('dynamic_lighting_enabled',false);
