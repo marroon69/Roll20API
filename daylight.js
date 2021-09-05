@@ -19,7 +19,7 @@ on('chat:message',msg=>{
                 
                 page.set('dynamic_lighting_enabled',true);
                 page.set('daylight_mode_enabled', true);
-                page.set('explorer_mode','on');
+                page.set('explorer_mode','basic');
                 page.set('lightupdatedrop',true);
                 page.set('daylightModeOpacity',0.5);
                 page.set('force_lighting_refresh',true);
@@ -28,7 +28,7 @@ on('chat:message',msg=>{
                 
                 page.set('dynamic_lighting_enabled',true);
                 page.set('daylight_mode_enabled', true);
-                page.set('explorer_mode','on');
+                page.set('explorer_mode','basic');
                 page.set('lightupdatedrop',true);
                 page.set('daylightModeOpacity',1.0);
                 page.set('force_lighting_refresh',true);
@@ -37,7 +37,7 @@ on('chat:message',msg=>{
                 
                 page.set('dynamic_lighting_enabled',true);
                 page.set('daylight_mode_enabled', true);
-                page.set('explorer_mode','on');
+                page.set('explorer_mode','basic');
                 page.set('lightupdatedrop',true);
                 page.set('daylightModeOpacity',0.0);
                 page.set('force_lighting_refresh',true);
@@ -46,7 +46,7 @@ on('chat:message',msg=>{
                 
                 page.set('dynamic_lighting_enabled',true);
                 page.set('daylight_mode_enabled', true);
-                page.set('explorer_mode','on');
+                page.set('explorer_mode','basic');
                 page.set('lightupdatedrop',true);
                 page.set('daylightModeOpacity',0.2);
                 page.set('force_lighting_refresh',true);
