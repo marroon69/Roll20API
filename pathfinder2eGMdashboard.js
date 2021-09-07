@@ -7,8 +7,8 @@ on('chat:message', msg => {
         let tableRowOdd = '<tr style= "border: 1px solid black; ">';
         let tableRow = "";
         let tableCell = '<td style="border: 1px solid black;">';
-        let columnNames =['Name', 'HP','HP Max', 'AC', 'Perception', 'Stealth','Fort', 'Refex', 'Will','Lore']
-        let attributes = ['character_name', 'hit_points','hit_points_max','armor_class', 'group$perception$perception_proficiency_display',
+        let columnNames =['Name', 'HP','HP Max','conditions', 'AC', 'Perception', 'Stealth','Fort', 'Refex', 'Will','Lore']
+        let attributes = ['character_name', 'hit_points','hit_points_max','repeating_repeating_conditions_$0_condition' ,'armor_class', 'group$perception$perception_proficiency_display',
         'group$stealth$stealth_proficiency_display','saving_throws_fortitude', 'saving_throws_reflex', 'saving_throws_will', 'repeating_lore_$0_lore_name'];
         let footer='</tbody></table><p><br></p>'
         let body='';
@@ -44,7 +44,8 @@ on('chat:message', msg => {
                 tableRow = tableRowOdd;
             }
              body = body.concat(tableRow);
-            if (getAttrByName(item.id, "sheet_type") !== sheet_type){
+             log(item);
+            if (getAttrByName(item.id, "sheet_type") !== sheet_type && item.get("archived") === false){
                 attributes.forEach(function (attribute,index) {
                     if (attribute.includes('_max')){
                         attribute= attribute.replace('_max','');
@@ -53,13 +54,13 @@ on('chat:message', msg => {
                     } else if (attribute.includes('repeating')){
                         repeatList=[];
                         let repeating_attrribute = attribute.split(repeatingDelimiter)[1];
-                        
                         let repeating = findObjs({_type: 'attribute',_characterid:item.id});
+                        
                         repeating.forEach(function (item, index) {
                             
                             let name = item.get('name');
-                            
-                            if (name.includes(repeating_attrribute)){
+                           
+                            if (name.endsWith(repeating_attrribute)){
                                 
                                 repeatList.push(item.get('current'));
                             }
